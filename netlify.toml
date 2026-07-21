@@ -1,6 +1,6 @@
 [build]
   command = "pnpm run build"
-  publish = "artifacts/groovy-gym-bus/dist"
+  publish = "artifacts/groovy-gym-bus/dist/public"
 
 [build.environment]
   NODE_VERSION = "20"
