@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap');
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is([data-theme="dark"] *));
+
+@theme inline {
+  --color-bg-base: var(--bg-base);
+  --color-bg-surface: var(--bg-surface);
+  --color-bg-surface-alt: var(--bg-surface-alt);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-secondary: var(--accent-secondary);
+  --color-accent-tertiary: var(--accent-tertiary);
+  --color-border: var(--border);
+
+  --font-display: 'Fraunces', serif;
+  --font-sans: 'Inter', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  
+  --shadow-ambient: var(--shadow-ambient);
+}
+
+:root {
+  --bg-base: #F1F3EF;
+  --bg-surface: #FFFFFF;
+  --bg-surface-alt: #E8EBE4;
+  --text-primary: #212938;
+  --text-secondary: #5B6472;
+  --accent-primary: #2B4C7E;
+  --accent-secondary: #C97D2C;
+  --accent-tertiary: #6B8F71;
+  --border: #D8DCD3;
+  --shadow-ambient: 0 4px 24px rgba(33, 41, 56, 0.08);
+
+  --background: 83 14% 94%;
+  --foreground: 219 26% 17%;
+}
+
+[data-theme="dark"] {
+  --bg-base: #14171F;
+  --bg-surface: #1D212C;
+  --bg-surface-alt: #242938;
+  --text-primary: #E9E7DF;
+  --text-secondary: #9AA2B1;
+  --accent-primary: #5A82B8;
+  --accent-secondary: #D9924A;
+  --accent-tertiary: #7FA786;
+  --border: #2C313F;
+  --shadow-ambient: 0 4px 24px rgba(0, 0, 0, 0.4);
+
+  --background: 224 22% 10%;
+  --foreground: 52 14% 89%;
+}
+
+@layer base {
+  * {
+    @apply border-[var(--border)];
+  }
+
+  body {
+    @apply font-sans antialiased bg-bg-base text-text-primary overflow-x-hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight text-text-primary;
+  }
+}

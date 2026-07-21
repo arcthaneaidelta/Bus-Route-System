@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "Groovy Gym Bus"
+version = "1.0.0"
+id = "artifacts/groovy-gym-bus"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25378
+
+[services.development]
+run = "pnpm --filter @workspace/groovy-gym-bus run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/groovy-gym-bus", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/groovy-gym-bus/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25378"
+BASE_PATH = "/"

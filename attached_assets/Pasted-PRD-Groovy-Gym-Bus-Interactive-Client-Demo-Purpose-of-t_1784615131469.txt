@@ -1,0 +1,215 @@
+PRD — Groovy Gym Bus: Interactive Client Demo
+
+Purpose of this document: This is a build spec for an AI coding tool (Replit / Antigravity). It describes a front-end-only, no-backend demo of a custom operations platform, built to win a freelance bid. The client must see their exact business — three moving gym buses, rotating coaches, daycare stops, birthday parties — reflected on screen well enough to say "I want to hire this person."
+
+1. Project Overview
+
+What this is: A single-page, scroll-driven marketing/demo site that showcases a proposed custom ERP for a mobile youth gymnastics business (3 buses, 700+ students, daycare/school routes + weekend birthday parties).
+
+What this is NOT: A working application. There is no real database, no real payments, no real authentication. Every "booking," "payment," and "login" interaction is a scripted UI sequence using mock/dummy data that feels real (loading state → success state → confirmation), built with local component state only.
+
+Audience: One person — the client — viewing this on a laptop and possibly a phone, deciding whether to hire the freelancer who sent it.
+
+Success criteria:
+
+Loads fast, feels premium in the first 2 seconds (loading sequence + hero).
+Every one of the client's 5 stated workflows (fleet/routing, parent checkout, birthday engine, staff roster, compliance/reporting) is represented as its own interactive section — not just described in text.
+Runs smoothly at 60fps on a mid-range phone, not just a laptop.
+Has a working dark/light toggle.
+Footer reads "All rights reserved. M Akram" — not any platform's default attribution.
+2. Scope
+
+In scope:
+
+Marketing/demo landing page, single scrolling page with anchor navigation.
+Interactive mock flows: parent guest checkout, birthday party booking + RSVP loop, staff mobile roster, fleet/route map, compliance/reporting dashboard.
+Loading sequence, dark/light mode, scroll + hover + click micro-interactions.
+Fully responsive (mobile, tablet, desktop).
+Footer / contact section.
+
+Out of scope (do not build):
+
+Any real backend, database, or persistence layer.
+Real Airtable/Softr/Glide integration.
+Real payment processing (Helcim/Stripe/Square) — simulate the UI only.
+Real authentication or accounts.
+Real SMS/email sending for RSVP links — simulate the link generation UI only.
+3. Tech Stack (recommended for Replit/Antigravity)
+Framework: React + Vite
+Styling: Tailwind CSS, using the design tokens in Section 5 (do not use Tailwind's default palette — override with the custom tokens)
+Animation: Framer Motion for scroll reveals, layout transitions, and micro-interactions
+Icons: lucide-react (outline style, restyled to match the palette — do not use default stroke colors)
+Fonts: Google Fonts import (see Section 5.2)
+State: Local component state / React Context only — no external state library needed
+Data: Hardcoded mock JSON objects (bus roster, daycare stops, students, party bookings) living in a /mockData folder, so the interactions have something believable to render
+4. Design Direction — Read This Before Building Anything
+
+Do not default to any of these three "AI-generated" looks: (1) warm cream background with a terracotta/clay accent, (2) near-black background with one bright acid-green or neon accent, (3) black-and-white broadsheet/newspaper layout with hairline rules. All three are overused defaults. This brief has a real subject — moving buses, transit routes, gymnastics — and the palette below is built from that subject, not from a template.
+
+Signature element: A thin animated route line — a dashed path (styled like a transit map line) that appears to physically connect sections as the user scrolls, with a small bus-stop dot marking each section. This isn't decoration — it mirrors the real product: buses moving between real stops on a schedule. Use it once, well, as the scroll-progress spine of the page (see Section 8).
+
+4.1 — Do not use
+
+Neon colors, glossy gradients, glassmorphism drop-shadows, generic stock photography of children (legal/consent risk for a demo — use abstract illustration or icon-based visuals instead), default shadcn purple/violet accents, emoji as icons.
+
+5. Design System
+5.1 — Color Tokens
+
+Light mode
+
+Token	Hex	Use
+bg-base	
+#F1F3EF	Page background — soft sage-tinted white, not warm cream
+bg-surface	
+#FFFFFF	Cards, panels
+bg-surface-alt	
+#E8EBE4	Alternating section backgrounds
+text-primary	
+#212938	Deep transit-navy — body/headline text
+text-secondary	
+#5B6472	Muted slate — captions, labels
+accent-primary	
+#2B4C7E	Route-blue — primary buttons, links, nav
+accent-secondary	
+#C97D2C	Muted marigold — CTAs, highlights, badges (used sparingly)
+accent-tertiary	
+#6B8F71	Sage green — success states, party-engine accents
+border	
+#D8DCD3	Hairline dividers
+
+Dark mode
+
+Token	Hex	Use
+bg-base	
+#14171F	Deep navy-black, never pure #000
+bg-surface	
+#1D212C	Cards, panels
+bg-surface-alt	
+#242938	Alternating sections
+text-primary	
+#E9E7DF	Warm off-white
+text-secondary	
+#9AA2B1	Muted
+accent-primary	
+#5A82B8	Lightened route-blue for contrast on dark
+accent-secondary	
+#D9924A	Lightened marigold
+accent-tertiary	
+#7FA786	Lightened sage
+border	
+#2C313F	Hairline dividers
+
+Accent colors carry meaning, not decoration: blue = routing/scheduling/staff, marigold = money/booking/CTA, sage = confirmation/success/party engine. Keep this mapping consistent everywhere.
+
+5.2 — Typography
+Display face: Fraunces (serif, warm, has real character) — headlines only, used with restraint, weight 500–600, slightly negative letter-spacing on large sizes.
+Body face: Inter — all body copy, UI labels, buttons. Weight 400–500.
+Data/schedule face: IBM Plex Mono — used specifically for anything that reads like a schedule: time slots, bus IDs, route codes, timestamps in the staff roster and fleet sections. This is thematic, not arbitrary — it should feel like a real transit timetable.
+
+Type scale (desktop): H1 56px / H2 40px / H3 28px / Body 17px / Caption 14px / Mono data 15px. Scale down proportionally at mobile breakpoints (H1 36px, H2 28px, H3 22px).
+
+5.3 — Spacing, radius, shadow
+Spacing scale: 4 / 8 / 16 / 24 / 32 / 48 / 64 / 96px. Sections use 96px vertical padding on desktop, 48px on mobile.
+Corner radius: 12px on cards, 8px on buttons/inputs, 999px (full) only on pills/badges/toggle. No radius over 16px anywhere else — avoid the overly-rounded "AI app" look.
+Shadows: one soft ambient shadow only (0 4px 24px rgba(33,41,56,0.08) light / 0 4px 24px rgba(0,0,0,0.4) dark). No glassmorphism, no glow effects, no colored shadows.
+6. Site Structure (single scrolling page, anchor nav)
+Loading sequence (pre-content)
+Sticky nav (transparent → solid on scroll)
+Hero — the live/motion section
+Problem → Solution framing
+The Fleet & Route System (interactive)
+Parent Registration & Checkout (interactive mock flow)
+Weekend Birthday Party Engine (interactive mock flow)
+Staff Mobile Roster (interactive phone mockup)
+Compliance & Reporting (dashboard mock)
+Built-with / trust section (Airtable + Softr/Glide architecture, shown simply)
+Footer / Contact
+7. Section-by-Section Spec
+7.1 — Loading Sequence
+Full-viewport, bg-base, centered.
+Animate a small route-line drawing itself (SVG stroke-dashoffset animation, 1.2s, ease cubic-bezier(0.65,0,0.35,1)) with a bus-stop dot traveling along it.
+Below it, a thin progress bar (0–100%, fake timed progress, ~1.4s total) in accent-secondary.
+Wordmark: "GROOVY GYM BUS" in Fraunces, letter-spacing wide, fades/slides up 12px on complete.
+On complete: whole loader fades out (400ms) and scales down 2%, revealing the hero underneath (no hard cut).
+Respect prefers-reduced-motion: if set, skip straight to a simple 300ms fade, no drawing animation.
+7.2 — Sticky Nav
+Transparent over hero, transitions to bg-surface + hairline bottom border + subtle shadow after 60px scroll (animate background-color, not a hard swap).
+Left: wordmark. Center/right: anchor links (Fleet, Parents, Parties, Staff, Reporting, Contact). Far right: dark/light toggle (sun/moon icon morph, 250ms) + a marigold "Get Started" pill button.
+Active section indicator: the nav link matching the section currently in view gets an underline that slides between links (layoutId in Framer Motion), not an abrupt swap.
+7.3 — Hero (the "live" section)
+
+The client asked for something video-like in the background — build this as a lightweight animated SVG/Canvas scene instead of an actual video file: it achieves the same "alive" feeling without the mobile data cost, load-time hit, or frame-rate risk a video background carries, and it stays crisp at any screen size.
+
+Background: a stylized city-map silhouette (simple line-art streets) in bg-surface-alt, with 2–3 dashed route lines looping slowly across it, each with a small bus icon animating along its path on a 12–18s loop (CSS offset-path or Framer Motion path animation). Subtle parallax: background moves slower than foreground on scroll.
+Foreground: H1 headline (e.g., "Your Buses Never Stop. Neither Should Your Booking System.") in Fraunces, subheadline in Inter, two CTAs ("See the Live Fleet" scrolls to 7.5, "Book a Demo" scrolls to footer).
+A small live-feeling stat strip beneath the CTAs: "3 Buses · 700+ Students · Live Routes" — the numbers count up from 0 on first scroll into view (1s, ease-out).
+Mouse-move parallax on desktop only (background shifts max 8px on cursor move); disabled on touch devices.
+7.4 — Problem → Solution
+Two-column (stacks on mobile): left = short copy on why rigid legacy gym software breaks for a moving, multi-asset business; right = a simple animated before/after diagram (tangled disconnected boxes → clean connected route-line diagram) triggered on scroll-into-view.
+Keep copy short — 3 sentences max per side. No stock photography here.
+7.5 — The Fleet & Route System (interactive)
+Three bus cards (Bus 1 / Bus 2 / Bus 3), each showing today's mock route as a horizontal timeline of stops (daycare/school names, time slots in IBM Plex Mono) with a capacity chip per stop (e.g., "14/16" in sage if under cap, marigold if at cap).
+Clicking a bus card expands it (height auto-animate, Framer Motion layout) to show the full stop-by-stop schedule for that bus.
+A capacity chip animates a subtle "pulse" once if a mock stop is at 100% capacity, to visually demonstrate the overbooking-prevention feature the client specifically asked for.
+7.6 — Parent Registration & Checkout (interactive mock)
+Framed as a phone-shaped mockup (rounded device frame) showing the actual guest checkout screen.
+Real interaction, fake backend: user picks a daycare from a mock dropdown → mock child-info fields appear → a signature-pad style waiver box where they can literally draw with mouse/touch → tapping "Pay Now" shows a 900ms loading spinner styled as a transit-loading dot sequence → success state ("You're booked! 🎉" — replace emoji with a small custom checkmark-in-circle icon, not literal emoji) with a mock confirmation card.
+No real payment fields (no card number capture) — show Apple Pay / Google Pay / card icons as a payment-method selector row, purely visual.
+Explicitly demonstrate "no account required" — no email/password fields anywhere in this flow.
+7.7 — Weekend Birthday Party Engine (interactive mock)
+A simple interactive calendar (current month, mock data) with open weekend slots highlighted in accent-tertiary. Clicking an open slot opens a booking panel (package selector, deposit amount, "Book This Slot" button → same success-state pattern as 7.6).
+After mock booking, show the RSVP loop visually: a generated link appears in a copyable field, with a small animated diagram showing "You → Share Link → Guest Parents → Auto-Signed Waivers → Live Roster" as a 4-node horizontal flow that draws itself in on scroll (this directly visualizes a feature the client specifically called out, so it deserves its own visual, not just a text bullet).
+7.8 — Staff Mobile Roster (interactive phone mockup)
+Second phone-frame mockup, styled distinctly from 7.6 (maybe shown at an angle, slightly smaller) to signal "this is a different user, a different device context."
+Mock login screen (coach name + bus selector) → tapping in shows a clean checklist of students for "this hour's stop" with checkboxes for attendance and a tap-to-reveal emergency contact per student (expand/collapse, not a modal — keep it thumb-friendly and fast).
+Everything sized for one-thumb use: large tap targets (min 44px), no hover-dependent interactions in this section since it represents a mobile-only screen.
+7.9 — Compliance & Reporting (dashboard mock)
+A simple, clean dashboard card layout: mock chart of "Profitability by Bus" (bar chart, one bar per bus, using accent-primary/accent-secondary/accent-tertiary — this is a legitimate place for the 3-color system to appear together), plus a small mock table of "T4 Shift Timestamps" in IBM Plex Mono.
+Numbers animate in on scroll (bars grow from 0, 600ms, staggered 100ms each).
+7.10 — Built-With / Trust Section
+Simple, quiet section: three icons/labels — "Airtable" (relational core), "Softr / Glide" (parent + staff interfaces), "Helcim / Stripe" (Canadian payments + Interac + mobile wallets) — with one line each on why that tool fits this specific business. Keep this understated; it's a credibility beat, not another hero.
+7.11 — Footer / Contact
+bg-surface-alt (dark navy-tinted in dark mode), generous padding.
+Left: wordmark + one-line tagline.
+Center: contact — simple mock contact form (name, email, message, "Send" button with the same success-state micro-interaction pattern used elsewhere) — no real send functionality, just a believable confirmation state.
+Right: anchor links repeated for navigation.
+Bottom bar, centered, small caption text: "All rights reserved. M Akram" — this must replace any default platform attribution text; do not leave Replit's default footer credit in place.
+8. Global Interaction Patterns
+Scroll-triggered reveals: elements fade up 16px + opacity 0→1 on entering viewport (IntersectionObserver or Framer Motion whileInView), 500ms, ease-out, triggered once (viewport={{ once: true }}) — don't re-animate every time the user scrolls back up, it reads as glitchy.
+Route-line scroll spine: the signature dashed line from Section 4 runs down the page (desktop only — simplify to a plain progress bar on mobile) with stroke-dashoffset tied to scroll progress, and the bus-stop dot moves along it to mark which section is active.
+Hover states (desktop): buttons scale 1.02 + background shifts to a slightly deeper shade of the same accent (no color hue change), 150ms ease. Cards lift 2px with the ambient shadow from Section 5.3. Never use a hover effect that only exists for decoration — every hover should confirm "this is clickable."
+Click/tap feedback: buttons scale down to 0.97 on press (whileTap in Framer Motion), 100ms, spring back. This applies on touch too (:active state), since mobile has no hover.
+Page/section transitions: none needed — it's a single scrolling page, not a multi-page router. Keep transitions to within-section state changes (accordion expand, modal-less panel reveals) as described per section above.
+Dark/light toggle: instant token swap via a data-theme attribute on <html> + CSS variables (not a full re-render); icon morphs sun↔moon over 250ms; respect system preference (prefers-color-scheme) as the default on first load, then remember the user's manual choice for the session (in-memory state, not localStorage, since this is a demo).
+9. Performance & Accessibility
+Target a consistent 60fps: animate only transform and opacity (GPU-accelerated properties), never animate width, height, top, or left directly — use transform: scale() / translate() instead.
+No literal video files — see Section 7.3 rationale. If a real video is added later, it must be a compressed .webm loop under ~2MB, muted, autoplay loop playsinline, with a static poster image fallback for slow connections, and must not autoplay on mobile data — show the poster image instead until tapped.
+Respect prefers-reduced-motion: disable the route-line draw, parallax, and count-up animations; replace with instant/simple fades.
+Visible keyboard focus states on every interactive element (don't remove the default outline without replacing it with an equally visible custom one).
+Color contrast: body text must meet at least 4.5:1 against its background in both themes — verify text-secondary on bg-surface-alt specifically, as muted-on-muted is the most likely failure point.
+Lazy-load below-the-fold sections' heavier assets (charts, illustrations) so first paint stays fast.
+10. Responsive Behavior
+Breakpoints: mobile <640px, tablet 640–1024px, desktop >1024px.
+Phone mockups (7.6, 7.8) go full-width and simplify to a single realistic device frame on mobile — don't shrink them illegibly.
+Fleet cards (7.5) stack vertically on mobile instead of a 3-column row.
+Nav collapses to a hamburger/slide-in panel under 640px; the dark/light toggle stays visible in the collapsed bar.
+Route-line scroll spine (Section 8) simplifies to a plain top progress bar on mobile — the full illustrative line is a desktop flourish only.
+Touch targets minimum 44×44px throughout, no hover-only affordances anywhere on mobile.
+11. Content & Copy Guidelines
+Write from the client's-eyes view: describe what parents, coaches, and the owner can actually do, not the tech stack, in headlines and body copy. Save "Airtable / Softr / Glide" language for Section 7.10 only.
+Keep every section's copy short — this is a demo meant to be skimmed and clicked through, not read top to bottom.
+No stock photography of real children (unnecessary legal/consent complexity for a demo, and it'll look generic). Use the illustrated route/bus motif and abstract icon-based visuals instead throughout.
+12. Deliverable Checklist
+ Loading sequence with route-line draw + reduced-motion fallback
+ Sticky nav with scroll-based background transition + active-link indicator
+ Hero with animated SVG/Canvas route scene (no literal video file) + count-up stats
+ Fleet & Route interactive cards with capacity chips
+ Parent checkout mock flow (phone frame, waiver signature, fake payment success state)
+ Birthday party mock booking + animated RSVP-loop diagram
+ Staff roster mock flow (second phone frame, attendance checklist, expandable emergency contacts)
+ Reporting dashboard mock with animated bar chart + mono-styled data table
+ Built-with/trust section
+ Footer with working mock contact form and "All rights reserved. M Akram" in the bottom bar
+ Dark/light toggle, system-preference default
+ Full responsive pass at all three breakpoints
+ Reduced-motion support + visible focus states throughout
