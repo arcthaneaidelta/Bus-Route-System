@@ -3,8 +3,6 @@
 @import 'tw-animate-css';
 @plugin "@tailwindcss/typography";
 
-@custom-variant dark (&:is([data-theme="dark"] *));
-
 @theme inline {
   --color-bg-base: var(--bg-base);
   --color-bg-surface: var(--bg-surface);
@@ -37,22 +35,6 @@
 
   --background: 83 14% 94%;
   --foreground: 219 26% 17%;
-}
-
-[data-theme="dark"] {
-  --bg-base: #14171F;
-  --bg-surface: #1D212C;
-  --bg-surface-alt: #242938;
-  --text-primary: #E9E7DF;
-  --text-secondary: #9AA2B1;
-  --accent-primary: #5A82B8;
-  --accent-secondary: #D9924A;
-  --accent-tertiary: #7FA786;
-  --border: #2C313F;
-  --shadow-ambient: 0 4px 24px rgba(0, 0, 0, 0.4);
-
-  --background: 224 22% 10%;
-  --foreground: 52 14% 89%;
 }
 
 @layer base {

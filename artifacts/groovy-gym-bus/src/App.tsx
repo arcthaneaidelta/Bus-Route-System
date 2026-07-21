@@ -18,14 +18,6 @@ function App() {
 
   const handleLoadComplete = useCallback(() => setLoading(false), []);
 
-  // Initialize theme based on system preference
-  useEffect(() => {
-    const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (isDark) {
-      document.documentElement.setAttribute('data-theme', 'dark');
-    }
-  }, []);
-
   return (
     <div className="relative min-h-[100dvh] w-full bg-bg-base transition-colors duration-300">
       <AnimatePresence mode="wait">

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sun, Moon, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 const navLinks = [
   { label: 'Fleet', href: '#fleet' },
@@ -12,7 +12,6 @@ const navLinks = [
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>('');
 
@@ -34,22 +33,6 @@ export default function Nav() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  useEffect(() => {
-    if (document.documentElement.getAttribute('data-theme') === 'dark') {
-      setTheme('dark');
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-    if (newTheme === 'dark') {
-      document.documentElement.setAttribute('data-theme', 'dark');
-    } else {
-      document.documentElement.removeAttribute('data-theme');
-    }
-  };
 
   const scrollTo = (href: string) => {
     setMobileMenuOpen(false);
@@ -96,13 +79,6 @@ export default function Nav() {
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-full text-text-secondary hover:bg-bg-surface-alt transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary"
-            aria-label="Toggle theme"
-          >
-            {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
-          </button>
           <motion.button
             onClick={() => scrollTo('#contact')}
             className="bg-accent-secondary text-white px-6 py-2.5 rounded-full text-sm font-medium hover:bg-[#b06d25] transition-colors shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2 focus-visible:ring-offset-bg-base"
@@ -114,9 +90,6 @@ export default function Nav() {
         </div>
 
         <div className="md:hidden flex items-center gap-4">
-          <button onClick={toggleTheme} className="p-2 text-text-secondary" aria-label="Toggle theme">
-            {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
-          </button>
           <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 text-text-primary" aria-label="Menu">
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
